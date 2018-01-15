@@ -1,4 +1,7 @@
-﻿using System;
+﻿using afsassgment.BLL;
+using afsassgment.BLL.Translator;
+using afsassigment.ActionFilters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +9,7 @@ using System.Web.Mvc;
 
 namespace afsassigment.Controllers
 {
+    [LogRequestActionFilter]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -13,18 +17,15 @@ namespace afsassigment.Controllers
             return View();
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult Translate(string textToTranslate)
         {
-            ViewBag.Message = "Your application description page.";
+            TranslationInput translationInput = new TranslationInput(textToTranslate, TranslatorType.L33tSp34k);
+            ITranslator translator = TranslatorFactory.CreateTranslator(translationInput);
 
-            return View();
-        }
+            TranslationResult translationResult = translator.Translate(translationInput);
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return Json(translationResult);
         }
     }
 }
