@@ -36,6 +36,11 @@ namespace afsassgment.BLL
 
         public TranslationResult Translate(TranslationInput textToTranslate)
         {
+            if(textToTranslate == null || string.IsNullOrEmpty(textToTranslate.Value))
+            {
+                return null;
+            }
+
             string translatedText = TranslateText(textToTranslate.Value);
 
             TranslationResult result = new TranslationResult(textToTranslate.Value, translatedText);
